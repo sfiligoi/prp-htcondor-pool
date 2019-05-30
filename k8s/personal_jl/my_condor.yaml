@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mycondor-jupyterlab
+  labels:
+    k8s-app: mycondor-jupyterlab
+spec:
+  template:
+    metadata: 
+      labels:
+        k8s-app: mycondor-jupyterlab
+    spec:
+      securityContext:
+        runAsUser: 0
+      initContainers:
+      - name: init-condor
+        image: sfiligoi/prp-htcondor-pool:wn-init
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /docker-init
+          name: docker-init
+      containers:
+      - name: main
+        image: gitlab-registry.nautilus.optiputer.net/prp/jupyterlab
+        imagePullPolicy: Always
+        resources:
+           limits:
+             nvidia.com/gpu: 1
+             memory: 16Gi
+             cpu: 2
+           requests:
+             nvidia.com/gpu: 1
+             memory: 4Gi
+             cpu: 1
+        command: ["/docker-init/htcondor/start_personal_condor.sh"]
+        volumeMounts:
+        - mountPath: /docker-init
+          name: docker-init
+        - mountPath: /var/lib/htcondor
+          name: condor-state 
+      volumes:
+      - name: docker-init
+        emptyDir: {}
+      - name: condor-state
+        emptyDir: {}
+
