@@ -21,5 +21,7 @@ Basic HTCondor commands:
     condor_rm
 
 
-More HTCondor documentation in [the htcondor manual](http://research.cs.wisc.edu/htcondor/manual/v8.9/SubmittingaJob.html).
+More HTCondor documentation in [the htcondor manual](https://htcondor.readthedocs.io/en/v8_8_3/users-manual/submitting-a-job.html).
+
+Note: HTCondor also provides [Python bindings](https://htcondor.readthedocs.io/en/v8_8_3/apis/python-bindings/index.html). May not be the easiest to use, but they are avaialble.
 
