@@ -7,7 +7,7 @@ To create a new deployment:
 To log into the pod:
 
     kubectl get pods -n <mynamespace>
-    exec -it <mypod>  -n <mynamespace> -- /bin/bash
+    exec -it mycondor-jupyterlab-0  -n <mynamespace> -- /bin/bash
     su - jovyan
 
 Basic HTCondor commands:
