@@ -22,6 +22,7 @@ Basic HTCondor commands:
 
 
 More HTCondor documentation in [the htcondor manual](https://htcondor.readthedocs.io/en/v8_8_3/users-manual/submitting-a-job.html).
+Most jobs you will want to submit will likely be in the vanilla universe.
 
 Note: HTCondor also provides [Python bindings](https://htcondor.readthedocs.io/en/v8_8_3/apis/python-bindings/index.html). May not be the easiest to use, but they are avaialble.
 
