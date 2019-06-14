@@ -8,7 +8,6 @@ To log into the pod:
 
     kubectl get pods -n <mynamespace>
     exec -it mycondor-jupyterlab-0  -n <mynamespace> -- /bin/bash
-    su - jovyan
 
 Basic HTCondor commands:
 * List queued jobs: 
