@@ -14,15 +14,37 @@ spec:
       labels:
         app: mycondor-jupyterlab
     spec:
-      securityContext:
-        runAsUser: 0
       initContainers:
       - name: init-condor
         image: sfiligoi/prp-htcondor-pool:wn-init
         imagePullPolicy: Always
+        resources:
+           limits:
+             memory: 1Gi
+             cpu: 1
+           requests:
+             memory: 1Gi
+             cpu: 1
         volumeMounts:
         - mountPath: /docker-init
           name: docker-init
+      - name: chown-juser
+        image: sfiligoi/prp-htcondor-pool:wn-init
+        resources:
+           limits:
+             memory: 1Gi
+             cpu: 1
+           requests:
+             memory: 1Gi
+             cpu: 1
+        command: ["/bin/bash", "-c", "chown -R 1000:100 /docker-init/htcondor; chown -R 1000:100 /var/lib/htcondor ; chown -R 1000:100 /opt/htcondor"]
+        volumeMounts:
+        - mountPath: /docker-init
+          name: docker-init
+        - mountPath: /opt/htcondor
+          name: condor-bins
+        - mountPath: /var/lib/htcondor
+          name: condor-state
       containers:
       - name: main
         image: gitlab-registry.nautilus.optiputer.net/prp/jupyterlab
@@ -40,10 +62,14 @@ spec:
         volumeMounts:
         - mountPath: /docker-init
           name: docker-init
+        - mountPath: /opt/htcondor
+          name: condor-bins
         - mountPath: /var/lib/htcondor
           name: condor-state 
       volumes:
       - name: docker-init
+        emptyDir: {}
+      - name: condor-bins
         emptyDir: {}
       - name: condor-state
         emptyDir: {}
