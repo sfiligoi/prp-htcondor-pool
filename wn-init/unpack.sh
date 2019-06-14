@@ -61,5 +61,5 @@ else
  fi
 fi
 
-rm -fr /opt/htcondor
-mv tmpunpack/condor /opt/htcondor
+mkdir -p /opt/htcondor
+mv tmpunpack/condor/* /opt/htcondor/
