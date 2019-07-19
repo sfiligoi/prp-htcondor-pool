@@ -6,7 +6,7 @@ RUN yum -y install https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-
                    yum-plugin-priorities && \
     yum -y install  \
                    osg-ca-certs \
-                   cilogon-openid-ca-cert && \
+                   cilogon-openid-ca-cert
 
 
 # The startup script will copy out of /opt/htcondor/downloads/
