@@ -61,7 +61,7 @@ if [ "${HTCONDOR_USER}" == "root" ]; then
 else
   echo "HTCondor daemons running as current user ${myuname}"
 
-  (cd /opt/htcondor && ./condor_install --make-personal-condor --local-dir=/var/lib/htcondor )
+  (cd /opt/htcondor && ./condor_install --type=execute --central-manager=${provided_collector} --local-dir=/var/lib/htcondor )
   if [ $? -ne 0 ]; then
     echo "ERROR: condor_install failed. Aborting."
     exit 1
@@ -78,7 +78,7 @@ echo "NUM_CPUS=1" > /var/lib/htcondor/config/50_one_cpu.config
 #
 # GSI security setup
 #
-cat > /var/lib/htcondor/config/50_one_cpu.config <<EOF
+cat > /var/lib/htcondor/config/10_gsi.config <<EOF
 SEC_DEFAULT_AUTHENTICATION = REQUIRED
 SEC_DEFAULT_AUTHENTICATION_METHODS = GSI 
 
