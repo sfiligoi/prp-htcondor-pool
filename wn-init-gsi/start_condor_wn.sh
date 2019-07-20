@@ -50,6 +50,19 @@ if [ "${HTCONDOR_USER}" == "root" ]; then
   fi
   echo "HTCondor daemons launched as root but will run as user ${HTCONDOR_USER}"
 
+  if [ "${SLOT_USER}" == "" ]; then
+    export SLOT_USER=slotuser
+  fi
+
+  id "${SLOT_USER}"
+  if [ $? -ne 0 ]; then
+    useradd "${SLOT_USER}"
+    if [ $? -ne 0 ]; then
+       echo "ERROR: Cannot crearte user ${SLOT_USER}. Aborting."
+       exit 1
+    fi
+  fi
+
   (cd /opt/htcondor && ./condor_install --type=execute --central-manager=${provided_collector} --owner=${HTCONDOR_USER} --local-dir=/var/lib/htcondor )
   if [ $? -ne 0 ]; then
     echo "ERROR: condor_install failed. Aborting."
@@ -57,6 +70,14 @@ if [ "${HTCONDOR_USER}" == "root" ]; then
   fi
 
   cp /opt/htcondor/condor.sh /etc/profile.d/
+
+   cat >/var/lib/htcondor/config/11_slot_user.config << EOF
+
+SLOT1_USER = ${SLOT_USER}
+DEDICATED_EXECUTE_ACCOUNT_REGEXP = ${SLOT_USER}
+STARTER_ALLOW_RUNAS_OWNER = False
+
+EOF
 
 else
   echo "HTCondor daemons running as current user ${myuname}"
