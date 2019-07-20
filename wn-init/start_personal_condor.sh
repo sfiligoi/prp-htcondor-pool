@@ -21,7 +21,7 @@ fi
 
 myuname=`id -un`
 
-if [ "${HTCONDOR_USER}" == "root" ]; then
+if [ "${myuname}" == "root" ]; then
 
   if [ "${HTCONDOR_USER}" == "" ]; then
     export HTCONDOR_USER=condor
