@@ -7,6 +7,8 @@
 
 provided_collector=$1
 
+echo "Running start_condor_wn.sh ${provided_collector}"
+
 (cd /docker-init/htcondor/downloads/ && ./unpack.sh)
 rc=$?
 if [ $rc -ne 0 ]; then
@@ -113,6 +115,11 @@ DENY_CONFIG = anonymous@*
 GSI_DAEMON_PROXY=/etc/grid-security/host.proxy
 
 EOF
+
+if [ -f "/docker-init/htcondor/condor_init_config.sh" ]; then
+  echo "Sourcing /docker-init/htcondor/condor_init_config.sh"
+  source /docker-init/htcondor/condor_init_config.sh
+fi
 
 echo "Starting HTCondor"
 
