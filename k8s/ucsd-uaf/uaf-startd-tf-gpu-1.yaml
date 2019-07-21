@@ -6,6 +6,7 @@ metadata:
     labels:
       app: uaf-startd-tf-gpu
 spec:
+      restartPolicy: Never
       initContainers:
       - name: init-condor
         image: sfiligoi/prp-htcondor-pool:wn-init-uaf
