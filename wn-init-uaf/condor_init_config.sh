@@ -33,5 +33,8 @@ cat > /var/lib/htcondor/config/20_uaf_start.config <<EOF
 
 START = stringListMember("${OS_IMAGE}",DESIRED_Images,",") && stringListMember("PRP-k8s",DESIRED_Sites,",")
 
+GLIDEIN_Image = "${OS_IMAGE}"
+GLIDEIN_Site = "PRP-k8s"
+
 EOF
 
