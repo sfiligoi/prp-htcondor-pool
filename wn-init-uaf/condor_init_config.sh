@@ -19,6 +19,7 @@ SHUTDOWN_GRACEFUL_TIMEOUT= (48 * 3600)
 # How long will it wait in an unclaimed state before exiting
 # i.e. Auto-cleanup
 STARTD_NOCLAIM_SHUTDOWN = 1200
+GLIDEIN_Max_Idle = 1200
 
 EOF
 
@@ -35,6 +36,13 @@ START = stringListMember("${OS_IMAGE}",DESIRED_Images,",") && stringListMember("
 
 GLIDEIN_Image = "${OS_IMAGE}"
 GLIDEIN_Site = "PRP-k8s"
+
+EOF
+
+cat > /var/lib/htcondor/config/90_uaf_publish.config <<EOF
+
+MASTER_ATTRS = GLIDEIN_ToDie,DaemonStopTime,GLIDEIN_Image,GLIDEIN_Site,GLIDEIN_Max_Idle
+STARTD_ATTRS = GLIDEIN_ToDie,START,DaemonStopTime,GLIDEIN_Image,GLIDEIN_Site,GLIDEIN_Graceful_Shutdown,GLIDEIN_Max_Idle
 
 EOF
 
