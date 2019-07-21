@@ -9,6 +9,10 @@ provided_collector=$1
 
 echo "Running start_condor_wn.sh ${provided_collector}"
 
+# Add domain to make condor happy
+cp /etc/hosts /tmp/hosts && sed "s/`hostname`/`hostname`.optiputer.net `hostname`/" /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
+
+
 (cd /docker-init/htcondor/downloads/ && ./unpack.sh)
 rc=$?
 if [ $rc -ne 0 ]; then
@@ -115,6 +119,9 @@ DENY_CONFIG = anonymous@*
 GSI_DAEMON_PROXY=/etc/grid-security/host.proxy
 
 EOF
+
+# We expect GPUs to be used
+echo "use feature : GPUs" > /var/lib/htcondor/config/10_gpu.config
 
 if [ -f "/docker-init/htcondor/condor_init_config.sh" ]; then
   echo "Sourcing /docker-init/htcondor/condor_init_config.sh"
