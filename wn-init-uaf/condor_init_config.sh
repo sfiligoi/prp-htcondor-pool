@@ -49,11 +49,11 @@ EOF
 
 cat  > /var/lib/htcondor/config/10_ccb_setup.config << EOF
 
-CCB_ADDRESS = \$(COLLECTOR_HOST)
-PRIVATE_NETWORK_NAME = optiputer.net
+# The security is mostly for the collector
+# we can use a more relaxed version here to keep it simple
+GSI_SKIP_HOST_CHECK=true
 
-# no CCB for the master, will not try to talk to it from remote
-MASTER.CCB_ADDRESS =
+CCB_ADDRESS = \$(COLLECTOR_HOST)
 
 EOF
 
