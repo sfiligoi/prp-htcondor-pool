@@ -1,0 +1,19 @@
+universe = vanilla
+
+# Files
+executable = test.sh
+output = test.out
+error = test.err
+log = test.log
+
+# File transfer behavior
+ShouldTransferFiles = YES
+WhenToTransferOutput = ON_EXIT
+
++DESIRED_Images="tensorflow/tensorflow:latest-gpu-py3"
++DESIRED_Sites="PRP-k8s"
+
+requirements = stringListMember(GLIDEIN_Image,DESIRED_Images,",") && stringListMember(GLIDEIN_Site,DESIRED_Sites,",")
+
+# Run job once
+queue
