@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: uaf-startd-tf-gpu-1
+    namespace: cms
+    labels:
+      app: uaf-startd-tf-gpu
+spec:
+      initContainers:
+      - name: init-condor
+        image: sfiligoi/prp-htcondor-pool:wn-init-uaf
+        imagePullPolicy: Always
+        resources:
+           limits:
+             memory: 1Gi
+             cpu: 1
+           requests:
+             cpu: 1
+        volumeMounts:
+        - mountPath: /docker-init
+          name: docker-init
+      containers:
+      - name: main
+        image: tensorflow/tensorflow:latest-gpu-py3
+        env:
+        - name: OS_IMAGE
+          value: "tensorflow/tensorflow:latest-gpu-py3"
+        resources:
+           limits:
+             nvidia.com/gpu: 1
+             memory: 16Gi
+             cpu: 2
+           requests:
+             nvidia.com/gpu: 1
+             memory: 4Gi
+             cpu: 1
+        command: ["/docker-init/htcondor/start_condor_wn.sh","glidein-collector.t2.ucsd.edu"]
+        #command: ["/bin/sh", "-c","sleep infinity"]
+        volumeMounts:
+        - name: proxy
+          mountPath: /etc/grid-security/host.proxy
+          subPath: host.proxy
+          readOnly: true
+        - mountPath: /docker-init
+          name: docker-init
+        - mountPath: /opt/htcondor
+          name: condor-bins
+      volumes:
+      - name: proxy
+        secret:
+          secretName: prp-uaf-wn-proxy
+          items:
+             - key: host.proxy
+               path: host.proxy
+          defaultMode: 256
+      - name: docker-init
+        emptyDir: {}
+      - name: condor-bins
+        emptyDir: {}
+
