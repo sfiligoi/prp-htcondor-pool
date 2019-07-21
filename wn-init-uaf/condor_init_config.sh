@@ -46,3 +46,14 @@ STARTD_ATTRS = GLIDEIN_ToDie,START,DaemonStopTime,GLIDEIN_Image,GLIDEIN_Site,GLI
 
 EOF
 
+
+cat  > /var/lib/htcondor/config/10_ccb_setup.config << EOF
+
+CCB_ADDRESS = $(COLLECTOR_HOST)
+PRIVATE_NETWORK_NAME = optiputer.net
+
+# no CCB for the master, will not try to talk to it from remote
+MASTER.CCB_ADDRESS =
+
+EOF
+
