@@ -1,0 +1,5 @@
+Note:
+This template yaml uses 3 template strings:
+IiIi - Short reminder string to differentiate between pods with different images
+IIII - Imaage name
+XXXX - Pseudo-random string to differentiate between pods
