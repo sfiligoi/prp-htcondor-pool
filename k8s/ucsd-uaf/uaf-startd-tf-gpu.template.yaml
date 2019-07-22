@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-    name: uaf-startd-tf-gpu-1
+    name: uaf-startd-tf-gpu-XXXX
     namespace: cms
     labels:
       app: uaf-startd-tf-gpu
