@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-    name: uaf-startd-tf-gpu-XXXX
+    name: uaf-startd-IiIi-gpu-XXXX
     namespace: cms
     labels:
-      app: uaf-startd-tf-gpu
+      app: uaf-startd-IiIi-gpu
 spec:
       restartPolicy: Never
       initContainers:
@@ -22,10 +22,10 @@ spec:
           name: docker-init
       containers:
       - name: main
-        image: tensorflow/tensorflow:latest-gpu-py3
+        image: IIII
         env:
         - name: OS_IMAGE
-          value: "tensorflow/tensorflow:latest-gpu-py3"
+          value: "IIII"
         resources:
            limits:
              nvidia.com/gpu: 1
