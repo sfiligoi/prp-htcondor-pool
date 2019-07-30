@@ -23,6 +23,13 @@ myuname=`id -un`
 
 if [ "${myuname}" == "root" ]; then
 
+  if [ "${NODE_DOMAIN}" == "" ]; then
+    export NODE_DOMAIN=cluster.local
+  fi
+
+  # Add domain to make condor happy
+  cp /etc/hosts /tmp/hosts && sed "s/`hostname`/`hostname`.${NODE_DOMAIN} `hostname`/" /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
+
   if [ "${HTCONDOR_USER}" == "" ]; then
     export HTCONDOR_USER=condor
   fi
