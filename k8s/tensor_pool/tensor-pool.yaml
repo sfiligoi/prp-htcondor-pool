@@ -115,7 +115,7 @@ spec:
       containers:
       - name: main
         # You may use any image that you like for interactive use
-        image: tensorflow/tensorflow:latest-devel-py3
+        image: tensorflow/tensorflow:latest-py3
         resources: # These resource values should be enough for condor itself, but tweak if planning other activity in pool
            limits:
              memory: 16Gi
