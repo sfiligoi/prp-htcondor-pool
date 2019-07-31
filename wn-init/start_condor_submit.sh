@@ -58,6 +58,29 @@ if [ "${myuname}" == "root" ]; then
 
   cp /opt/htcondor/condor.sh /etc/profile.d/
 
+
+  if [ "${SUBMIT_USER}" == "" ]; then
+    export SUBMIT_USER=user1
+  fi
+
+  mkdir -p /var/lib/htcondor/home/
+
+  echo "Regular user will be ${SUBMIT_USER}"
+
+  id "${SUBMIT_USER}"
+  if [ $? -ne 0 ]; then
+    useradd -s /bin/bash -b /var/lib/htcondor/home/ -m "${SUBMIT_USER}"
+    if [ $? -ne 0 ]; then
+       echo "ERROR: Cannot create user ${SUBMIT_USER}. Aborting."
+       exit 1
+    fi
+  fi
+
+  # NOTE:
+  # Assuming bash here, should be made more generic
+  echo "echo 'Please use user ${SUBMIT_USER} for job submission'" >> /root/.bashrc
+  echo "echo ' su - ${SUBMIT_USER}'" >> /root/.bashrc
+
 else
   echo "HTCondor daemons running as current user ${myuname}"
 
