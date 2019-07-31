@@ -116,6 +116,78 @@ Total for all users: 0 jobs; 0 completed, 0 removed, 0 idle, 0 running, 0 held, 
 user1@tensor-submit-0:~$ 
 ```
 
+### Testing the setup
+
+Here is a simple example workflow to test the setup (note that your output may be slightly different):
+
+```
+user1@tensor-submit-0:~$ cat >mymul.py <<EOF 
+#!/usr/local/bin/python
+
+import socket
+print("Running on %s"%socket.gethostname())
+
+# simple example to show the matrix multiplication with tensorflow                                                                                                            
+
+import tensorflow as tf
+matrix1 = tf.random_normal([8, 8], mean=-1, stddev=4)
+matrix2 = tf.matrix_inverse(matrix1)
+product = tf.matmul(matrix1, matrix2)
+with tf.Session() as sess:
+    result = sess.run(product)
+    print("result of matrix multiplication")
+    print("===============================")
+    print(result)
+    print("===============================")
+
+EOF
+user1@tensor-submit-0:~$ chmod a+x mymul.py
+user1@tensor-submit-0:~$ cat > test.submit << EOF 
+universe = vanilla
+
+# Files
+executable = mymul.py
+output = mymul.out
+error = mymul.err
+log = test.log
+
+# File transfer behavior
+ShouldTransferFiles = YES
+WhenToTransferOutput = ON_EXIT
+
+# Run job once
+queue
+
+EOF
+user1@tensor-submit-0:~$ condor_submit test.submit 
+Submitting job(s).
+1 job(s) submitted to cluster 1.
+user1@tensor-submit-0:~$ condor_wait test.log 
+All jobs done.
+user1@tensor-submit-0:~$ cat mymul.out 
+Running on tensor-wn-7bd54b548f-bd2mh
+result of matrix multiplication
+===============================
+[[ 1.0000000e+00  2.9802322e-08 -6.7055225e-08 -5.9604645e-08
+   1.1920929e-07  0.0000000e+00  2.3841858e-07 -4.7683716e-07]
+ [ 0.0000000e+00  1.0000000e+00  2.9802322e-08  0.0000000e+00
+   0.0000000e+00  2.3841858e-07  4.7683716e-07  0.0000000e+00]
+ [ 0.0000000e+00  0.0000000e+00  9.9999994e-01  0.0000000e+00
+   0.0000000e+00  4.7683716e-07  4.7683716e-07  0.0000000e+00]
+ [-5.2154064e-08 -1.3038516e-08  9.6624717e-08  9.9999988e-01
+  -5.9604645e-08  1.1920929e-07 -1.4901161e-08  2.3841858e-07]
+ [-7.4505806e-09 -1.3411045e-07  2.9802322e-08 -4.4703484e-08
+   9.9999982e-01 -5.9604645e-08 -5.9604645e-08 -4.7683716e-07]
+ [ 0.0000000e+00 -8.9406967e-08  4.4703484e-08  0.0000000e+00
+   5.9604645e-08  1.0000001e+00 -1.1920929e-07 -2.3841858e-07]
+ [ 5.9604645e-08 -2.9802322e-08 -8.9406967e-08 -5.9604645e-08
+   5.9604645e-08  1.7881393e-07  1.0000000e+00 -2.3841858e-07]
+ [ 2.9802322e-08 -7.4505806e-08  2.2351742e-08  0.0000000e+00
+   8.9406967e-08  1.7881393e-07 -5.9604645e-08  9.9999964e-01]]
+===============================
+```
+
+
 ## Changing the number of worker nodes
 
 The provided YAML will start 3 worker nodes.
