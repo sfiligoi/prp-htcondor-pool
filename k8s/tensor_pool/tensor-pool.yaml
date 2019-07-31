@@ -45,7 +45,7 @@ spec:
       containers:
       - name: main
         image: centos:centos7
-        resources:
+        resources:  # These resource values should be enough for a small pool
            limits:
              memory: 16Gi
              cpu: 2
@@ -79,7 +79,7 @@ spec:
         emptyDir: {}
       - name: condor-bins
         emptyDir: {}
-      - name: condor-state
+      - name: condor-state # Keep this on a truly persistent partition, if you have one
         emptyDir: {}
 ---
 apiVersion: apps/v1
@@ -114,8 +114,9 @@ spec:
           name: docker-init
       containers:
       - name: main
+        # You may use any image that you like for interactive use
         image: tensorflow/tensorflow:latest-devel-py3
-        resources:
+        resources: # These resource values should be enough for condor itself, but tweak if planning other activity in pool
            limits:
              memory: 16Gi
              cpu: 2
@@ -146,7 +147,7 @@ spec:
         emptyDir: {}
       - name: condor-bins
         emptyDir: {}
-      - name: condor-state
+      - name: condor-state # Keep this on a truly persistent partition, if you have one
         emptyDir: {}
 ---
 apiVersion: apps/v1
@@ -180,11 +181,12 @@ spec:
           name: docker-init
       containers:
       - name: main
+        # You may use any image that is suitable for your apps
         image: tensorflow/tensorflow:latest-gpu-py3
         env:
-        - name: OS_IMAGE
+        - name: OS_IMAGE # This will be advertised in condor, and can be used for matching jobs
           value: "tensorflow/tensorflow:latest-gpu-py3"
-        resources:
+        resources: # Tune this to your app needs
            limits:
              nvidia.com/gpu: 1
              memory: 16Gi
