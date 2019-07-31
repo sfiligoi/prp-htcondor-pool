@@ -110,7 +110,7 @@ UID_DOMAIN = prp
 TRUST_UID_DOMAIN = True
 
 # But the file system is not shared
-FILESYSTEM_DOMAIN=$(FULL_HOSTNAME)
+FILESYSTEM_DOMAIN=\$(FULL_HOSTNAME)
 
 #
 # Force pool password authentication
