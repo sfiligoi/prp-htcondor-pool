@@ -6,7 +6,7 @@ The YAML file in this directory is a ready-to-use example for creating a private
 For more information about HTCondor, look at the [HTCondor home page](https://research.cs.wisc.edu/htcondor/).
 
 Note that the example YAML sets up worker nodes that are based on the GPU version of tensorflow,
-but that can be chaged to virtually any other image, including user-generated ones.
+but that can be changed to virtually any other image, including user-generated ones.
 The only restriction is that they are based on either CentOS 7 or Ubuntu 16/18 (or similar). 
 
 ## Starting the HTCondor pool
