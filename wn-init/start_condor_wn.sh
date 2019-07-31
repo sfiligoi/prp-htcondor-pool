@@ -143,8 +143,50 @@ DENY_OWNER = anonymous@*
 
 EOF
 
+if [ "${OS_IMAGE}" != "" ]; then
+   cat > /var/lib/htcondor/config/80_os_image.config <<EOF
+#
+# Adverise image name
+#
+
+OS_Image = "${OS_IMAGE}"
+
+# Publish this info
+MASTER_ATTRS = \$(MASTER_ATTRS),OS_Image
+STARTD_ATTRS = \$(STARTD_ATTRS),OS_Image
+
+EOF
+
+fi
+
 # We expect GPUs to be used
 echo "use feature : GPUs" > /var/lib/htcondor/config/10_gpu.config
+
+#
+# Set up auto shutdown
+# Set to 0 if you want to disable it
+#
+if [ "${HTCONDOR_AUTO_SHUTDOWN}" == "" ]; then
+   export HTCONDOR_AUTO_SHUTDOWN=1200
+fi
+if [ "${HTCONDOR_AUTO_SHUTDOWN}" -gt 0 ]; then
+   cat > /var/lib/htcondor/config/20_autoshutdown.config <<EOF
+#
+# Condor Auto-shutdown Config
+#
+
+# How long will it wait in an unclaimed state before exiting
+# i.e. Auto-cleanup
+STARTD_NOCLAIM_SHUTDOWN = ${HTCONDOR_AUTO_SHUTDOWN}
+GLIDEIN_Max_Idle = ${HTCONDOR_AUTO_SHUTDOWN}
+
+# Publish this info
+MASTER_ATTRS = \$(MASTER_ATTRS),GLIDEIN_Max_Idle
+STARTD_ATTRS = \$(STARTD_ATTRS),GLIDEIN_Max_Idle
+
+EOF
+
+fi
 
 if [ -f "/docker-init/htcondor/condor_init_config.sh" ]; then
   echo "Sourcing /docker-init/htcondor/condor_init_config.sh"
