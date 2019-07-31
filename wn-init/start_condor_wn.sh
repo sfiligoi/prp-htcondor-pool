@@ -132,6 +132,10 @@ SEC_CLIENT_AUTHENTICATION = OPTIONAL
 
 # With strong security, do not use IP based controls
 ALLOW_WRITE = *
+ALLOW_NEGOTIATOR = *
+ALLOW_ADMINISTRATOR = *
+ALLOW_READ = *
+ALLOW_CLIENT = *
 
 # But must explicity deny unauthenticated access 
 DENY_WRITE = anonymous@*

@@ -62,4 +62,8 @@ else
 fi
 
 mkdir -p /opt/htcondor
+
+# in case there is already sumething it there, get rid of it
+rm -fr /opt/htcondor/*
+
 mv tmpunpack/condor/* /opt/htcondor/
