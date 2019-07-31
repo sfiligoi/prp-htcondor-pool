@@ -2,8 +2,12 @@
 
 ## Overview
 
-The yaml file in this directory is a ready-to-use example for creating a private HTCondor pool in Kubernetes.
+The YAML file in this directory is a ready-to-use example for creating a private HTCondor pool in Kubernetes.
 For more information about HTCondor, look at the [HTCondor home page](https://research.cs.wisc.edu/htcondor/).
+
+Note that the example YAML sets up worker nodes that are based on the GPU version of tensorflow,
+but that can be chaged to virtually any other image, including user-generated ones.
+The only restriction is that they are based on either CentOS 7 or Ubuntu 16/18 (or similar). 
 
 ## Starting the HTCondor pool
 
@@ -12,7 +16,7 @@ Any hard-to-guess string will do.
 
 e.g.
 ```
-echo "Blah Blah Blah" > poolpasswd
+echo "BlahSecretBlah" > poolpasswd
 ```
 
 Then store that information into a Kubernetes secret named **condor-poolpasswd**:
