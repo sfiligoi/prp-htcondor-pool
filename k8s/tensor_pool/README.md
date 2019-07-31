@@ -120,7 +120,7 @@ user1@tensor-submit-0:~$
 
 The provided YAML will start 3 worker nodes.
 
-If you want to change the number of worker nodes at any time by altering the replica count in the tensor-wn deployment. 
+If you want to change the number of worker nodes at any time you can do it by altering the replica count in the **tensor-wn** deployment. 
 
 For example:
 ```
