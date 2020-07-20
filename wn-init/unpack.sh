@@ -10,7 +10,7 @@ mkdir -p tmpunpack
 
 if [ -e "/etc/redhat-release" ]; then
  echo "Unpack RedHat version"
- (cd tmpunpack && tar -xzf ../condor-*RedHat*gz && mv condor* condor)
+ (cd tmpunpack && tar -xzf ../condor-*CentOS7*gz && mv condor* condor)
  if [ $? -ne 0 ]; then
    echo "ERROR: Failed to unpack. ABORTING"
    exit 1
