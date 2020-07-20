@@ -14,5 +14,19 @@ Running in the Clouds or reverse-NAT setups:
 ============================================
 
 If the node can only be reached through a reverse-NAT setup (e.g. in the clouds), add
-echo "TCP_FORWARDING_HOST = ${EXTERNAL_IP}" > /etc/condor/config.d/90_nat.config
-and restart the condor service.
+sudo echo "TCP_FORWARDING_HOST = ${EXTERNAL_IP}" > /etc/condor/config.d/90_nat.config
+and restart the condor service:
+sudo systemctl restart condor
+
+
+Adding kubernetes client
+========================
+
+Since you will probably add resources through Kuberrnetes, you may want to install kubectl, too.
+The provided support script will do that for you
+sudo ./kubectl_install.sh
+
+
+Note that you will need to manually add the needed configuration/authorization file for each user in their
+~/.kube/config
+
