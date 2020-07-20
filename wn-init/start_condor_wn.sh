@@ -92,10 +92,6 @@ else
 
 fi
 
-# The containers usaully have more CPUs visible than we can use
-# Limit to 1 CPU by default
-echo "NUM_CPUS=1" > /var/lib/htcondor/config/50_one_cpu.config
-
 #
 # Security setup
 #
@@ -167,8 +163,26 @@ EOF
 
 fi
 
+if [ "${NUM_CPUS}" != "" ]; then
+  echo "NUM_CPUS=${NUM_CPUS}" > /var/lib/htcondor/config/50_cpus.config
+else
+  # The containers usually have more CPUs visible than we can use
+  # Limit to 1 CPU by default
+  echo "NUM_CPUS=1" > /var/lib/htcondor/config/50_one_cpu.config
+fi
+
+if [ "${MEMORY}" != "" ]; then
+  echo "MEMORY=${MEMORY}" > /var/lib/htcondor/config/50_mem.config
+else
+  # The containers usually have more memory visible than we can use
+  # Limit to 4G by default
+  echo "MEMORY=4096" > /var/lib/htcondor/config/50_def_mem.config
+fi
+
 # We expect GPUs to be used
 echo "use feature : GPUs" > /var/lib/htcondor/config/10_gpu.config
+
+echo "NUM_SLOTS=1" > /var/lib/htcondor/config/50_one_slot.config
 
 #
 # Set up auto shutdown
