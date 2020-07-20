@@ -5,6 +5,9 @@ just run
 sudo ./condor_install.sh
 and you should be good to go.
 
+You will be asked to provide a pool password;
+choose something random, hard to guess. You will not need to insert it again.
+
 Note that port 9618 must allow incoming TCP traffic.
 
 Running in the Clouds or reverse-NAT setups:
