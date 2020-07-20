@@ -148,7 +148,7 @@ DENY_OWNER = anonymous@*
 EOF
 
 if [ "${CCB_ADDRESS}" != "" ]; then  
-   echo "CCB_ADDRESS = $(CCB_ADDRESS)" > /var/lib/htcondor/config/70_ccb.config
+   echo "CCB_ADDRESS = ${CCB_ADDRESS}" > /var/lib/htcondor/config/70_ccb.config
 fi
 
 if [ "${OS_IMAGE}" != "" ]; then
