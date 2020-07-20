@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then  echo "ERROR, aborting"; exit 1; fi
 #
 
 echo "=============================================="
-echo "Please provide a random HTCondor pool password 
+echo "Please provide a random HTCondor pool password"
 
 condor_store_cred -f /etc/condor/POOL
 if [ $? -ne 0 ]; then  echo "ERROR, aborting"; exit 1; fi
