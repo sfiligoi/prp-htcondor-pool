@@ -27,6 +27,9 @@ cp condor_config.d/* /etc/condor/config.d/
 # Create a unique pool password
 #
 
+echo "=============================================="
+echo "Please provide a random HTCondor pool password 
+
 condor_store_cred -f /etc/condor/POOL
 
 #
