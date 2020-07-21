@@ -1,0 +1,12 @@
+# User values for prp-htcondor-wn.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: pytorch/pytorch:1.5.1-cuda10.1-cudnn7-runtime
+
+resources:
+  cpus: 4
+  memMBs: 16384
+  gpus: 2
+

@@ -11,10 +11,17 @@ defaults.
 
 Furthermore, all the values can be changed at runtime, by passing them to helm.
 
-For example:
+You can eitther pass the as a parameters,
+for example:
 helm install prp-htcondor-wn --generate-name \
   --set resources.cpus=2 --set resources.memMBs=8000 --set resources.gpus=1 \
   --set image.repository=nvidia/cuda:10.0-runtime-centos7
+
+Or in a config file, for example
+cp examples/example_req.yaml myreq.yaml
+vi myreq.yaml
+helm install prp-htcondor-wn --generate-name -f myreq.yaml
+
 
 Required secrets
 ================
