@@ -1,4 +1,6 @@
-This directory contains a helm chart for creating HTCondor worker nodes.
+This directory contains a helm chart for creating HTCondor worker nodes,
+that can connect to an external HTCondor pool using password (shared secret) authentication.
+(see bare_metal/submit_ubuntu for an example)
 
 You will probably want to edit 
 prp-htcondor-wn/values.yaml
