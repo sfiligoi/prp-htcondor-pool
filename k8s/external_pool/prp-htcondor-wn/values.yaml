@@ -1,0 +1,35 @@
+# Default values for prp-htcondor-wn.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+k8s:
+  # you probably want to change this to an alternate namespace
+  namespace: default
+  secret: htcondor-secret
+
+htcondor:
+  # specify yout HTCondor collector here
+  collector: collector.example.com
+
+image:
+  repository: tensorflow/tensorflow:latest-gpu-py3
+  pullPolicy: IfNotPresent
+
+resources:
+  cpus: 1
+  memMBs: 4096
+  gpus: 1
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+
+cleanup:
+  # how long should HTCondor in the pod hang around, if there are no jobs
+  htcondorIdleTTL: 700
+  # how long the completed pod will hang around before being removed
+  podFinishedTTL: 120
+

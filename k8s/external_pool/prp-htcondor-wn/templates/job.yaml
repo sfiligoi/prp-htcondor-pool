@@ -1,0 +1,90 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "prp-htcondor-wn.fullname" . }}
+  namespace: {{ .Values.k8s.namespace }}
+
+  labels: 
+    app: prp-htcondor-wn
+spec:
+  ttlSecondsAfterFinished: {{ .Values.cleanup.podFinishedTTL }}
+  template:
+    metadata: 
+      labels:
+        app: prp-htcondor-wn
+    spec:
+      restartPolicy: Never
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+      - name: init-condor
+        image: sfiligoi/prp-htcondor-pool:wn-init
+        imagePullPolicy: Always
+        resources:
+           limits:
+             memory: 1Gi
+             cpu: 1
+           requests:
+             cpu: 1
+        volumeMounts:
+        - mountPath: /docker-init
+          name: docker-init
+      containers:
+      - name: main
+        # You may use any image that is suitable for your apps
+        image: "{{ .Values.image.repository }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: HTCONDOR_AUTO_SHUTDOWN
+          value: "{{ .Values.cleanup.htcondorIdleTTL }}"
+        - name: OS_IMAGE # This will be advertised in condor, and can be used for matching jobs
+          value: "{{ .Values.image.repository }}"
+        - name: CCB_ADDRESS
+          value: "{{ .Values.htcondor.collector }}"
+        - name: NUM_CPUS
+          value: "{{ .Values.resources.cpus }}"
+        - name: MEMORY
+          value: "{{ .Values.resources.memMBs }}"
+        resources: # Tune this to your app needs
+           limits:
+             nvidia.com/gpu: {{ .Values.resources.gpus }}
+             memory: {{ add .Values.resources.memMBs 512 }}M
+             cpu: {{ .Values.resources.cpus }}
+           requests:
+             nvidia.com/gpu: {{ .Values.resources.gpus }}
+             memory: {{ .Values.resources.memMBs }}M
+             cpu: {{ .Values.resources.cpus }}
+        command: ["/docker-init/htcondor/start_condor_wn.sh","{{ .Values.htcondor.collector }}"]
+        #command: ["/bin/sh", "-c","sleep infinity"]
+        volumeMounts:
+        - name: poolpasswd
+          mountPath: /var/lib/htcondor/pool_password
+          subPath: pool_password
+          readOnly: true
+        - mountPath: /docker-init
+          name: docker-init
+        - mountPath: /opt/htcondor
+          name: condor-bins
+      volumes:
+      - name: poolpasswd
+        secret:
+          secretName: {{ .Values.k8s.secret }}
+          items:
+             - key: pool_password
+               path: pool_password
+          defaultMode: 256
+      - name: docker-init
+        emptyDir: {}
+      - name: condor-bins
+        emptyDir: {}
+
