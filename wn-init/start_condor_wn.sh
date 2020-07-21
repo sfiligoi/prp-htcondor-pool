@@ -163,6 +163,10 @@ EOF
 
 fi
 
+if [ "${OWNER_ONLY}" != "" ]; then
+  echo "START=(\$(START))&&(TARGET.Owner=?=\"${OWNER_ONLY}\")" > /var/lib/htcondor/config/80_owner.config
+fi
+
 if [ "${NUM_CPUS}" != "" ]; then
   echo "NUM_CPUS=${NUM_CPUS}" > /var/lib/htcondor/config/50_cpus.config
 else
