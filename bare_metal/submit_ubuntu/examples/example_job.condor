@@ -1,0 +1,17 @@
+universe=vanilla
+# note: The executable must exist on the submit node
+executable=my_example.sh
+transfer_executable=True
+when_to_transfer_output = ON_EXIT
+log=example.log
+output=exaple.out.$(Cluster).$(Process)
+error=example.err.$(Cluster).$(Process)
+notification=Never
+
+request_cpus=1
+request_memory=2000
+request_gpus=1
+
+request_os_image="tensorflow/tensorflow:latest-gpu-py3"
+
+queue 1
